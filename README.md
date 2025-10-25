@@ -14,9 +14,7 @@ A **complete production-ready blockchain implementation** from scratch for fight
 8. [Technical Deep Dive](#-technical-deep-dive)
 9. [Security Features](#-security-features)
 10. [Project Structure](#-project-structure)
-11. [Screenshots](#-screenshots)
-12. [Troubleshooting](#-troubleshooting)
-13. [Future Enhancements](#-future-enhancements)
+11. [Future Enhancements](#-future-enhancements)
 
 ---
 
