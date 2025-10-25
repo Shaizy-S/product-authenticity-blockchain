@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Blockchain Authenticity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .status-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        .status-icon.authentic {
+            color: #28a745;
+        }
+
+        .status-icon.fake {
+            color: #dc3545;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        h1.authentic {
+            color: #28a745;
+        }
+
+        h1.fake {
+            color: #dc3545;
+        }
+
+        .status-message {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .product-details {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .product-details h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .detail-value {
+            color: #666;
+            text-align: right;
+            word-break: break-word;
+            max-width: 60%;
+        }
+
+        .product-id-box {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .detail-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .detail-value {
+                max-width: 100%;
+                text-align: left;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+
+        <div class="result-card">
+            {% if authenticated %}
+                <div class="status-icon authentic">✅</div>
+                <h1 class="authentic">Authentic Product Verified!</h1>
+                <p class="status-message">This product is registered on the blockchain and is genuine.</p>
+
+                <div class="product-details">
+                    <h2>📦 Product Information</h2>
+                    
+                    <div class="detail-row">
+                        <span class="detail-label">Product Name:</span>
+                        <span class="detail-value">{{ product.product_name }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Manufacturer:</span>
+                        <span class="detail-value">{{ product.manufacturer }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Batch Number:</span>
+                        <span class="detail-value">{{ product.batch_number }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Manufacture Date:</span>
+                        <span class="detail-value">{{ product.manufacture_date }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Blockchain Block:</span>
+                        <span class="detail-value">#{{ product.block_index }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Block Hash:</span>
+                        <span class="detail-value" style="font-size: 0.8em;">{{ product.block_hash[:32] }}...</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Transaction ID:</span>
+                        <span class="detail-value" style="font-size: 0.8em;">{{ product.transaction_id[:32] }}...</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Confirmations:</span>
+                        <span class="detail-value">{{ product.confirmed_blocks }} blocks</span>
+                    </div>
+
+                    <div class="product-id-box">
+                        <strong>Product ID:</strong><br>
+                        {{ product.product_id }}
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="/verify" class="btn btn-primary">🔍 Verify Another Product</a>
+                    <a href="/" class="btn btn-secondary">🏠 Go Home</a>
+                </div>
+
+            {% else %}
+                <div class="status-icon fake">❌</div>
+                <h1 class="fake">Product Not Found!</h1>
+                <p class="status-message">This product is not registered on the blockchain.</p>
+                
+                <div class="error-message">
+                    ⚠️ {{ message }}<br><br>
+                    This could mean:<br>
+                    • The product is counterfeit<br>
+                    • The Product ID is incorrect<br>
+                    • The product was never registered
+                </div>
+
+                <div class="actions">
+                    <a href="/verify" class="btn btn-primary">🔍 Try Again</a>
+                    <a href="/" class="btn btn-secondary">🏠 Go Home</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

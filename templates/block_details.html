@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block #{{ block.index }} Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: white;
+            color: #1e3c72;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .block-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .block-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .block-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .block-hash {
+            font-family: monospace;
+            font-size: 1em;
+            opacity: 0.9;
+            word-break: break-all;
+        }
+
+        .block-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #1e3c72;
+            padding-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #1e3c72;
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1.1em;
+            color: #333;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .hash-box {
+            background: #1e3c72;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            margin: 20px 0;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .transaction-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .tx-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tx-id {
+            font-family: monospace;
+            font-size: 0.85em;
+            color: #666;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .tx-signature {
+            font-size: 0.8em;
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .product-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .product-info h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .product-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .product-detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            background: #1e3c72;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .merkle-info {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .merkle-info h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .pow-info {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .pow-info h4 {
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .tx-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/explorer" class="back-btn">← Back to Explorer</a>
+
+        <div class="block-container">
+            <div class="block-header">
+                <h1>
+                    {% if block.index == 0 %}
+                        🎬 Genesis Block
+                    {% else %}
+                        Block #{{ block.index }}
+                    {% endif %}
+                </h1>
+                <p class="block-hash">{{ block.hash }}</p>
+            </div>
+
+            <div class="block-content">
+                <!-- Block Information Section -->
+                <div class="section">
+                    <h2>📊 Block Information</h2>
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">Block Index</div>
+                            <div class="info-value">{{ block.index }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Timestamp</div>
+                            <div class="info-value">{{ block.timestamp|int }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Number of Transactions</div>
+                            <div class="info-value">{{ block.transactions|length }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Nonce (Mining)</div>
+                            <div class="info-value">{{ block.nonce }}</div>
+                        </div>
+                    </div>
+
+                    <div class="pow-info">
+                        <h4>⛏️ Proof of Work</h4>
+                        <p><strong>Nonce:</strong> {{ block.nonce }} attempts were made to find a valid hash</p>
+                        <p><strong>Hash starts with:</strong> {{ block.hash[:4] }} (meets difficulty requirement)</p>
+                    </div>
+                </div>
+
+                <!-- Hash Information Section -->
+                <div class="section">
+                    <h2>🔐 Cryptographic Hashes</h2>
+                    
+                    <div class="info-box">
+                        <div class="info-label">Block Hash</div>
+                        <div class="hash-box">{{ block.hash }}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-label">Previous Block Hash</div>
+                        <div class="hash-box">{{ block.previous_hash }}</div>
+                    </div>
+
+                    <div class="merkle-info">
+                        <h4>🌳 Merkle Root</h4>
+                        <p style="word-break: break-all; font-family: monospace; margin-top: 10px;">
+                            {{ block.merkle_root }}
+                        </p>
+                        <p style="margin-top: 10px; font-size: 0.9em;">
+                            The Merkle root is a hash of all transactions, ensuring data integrity
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Transactions Section -->
+                <div class="section">
+                    <h2>📦 Transactions ({{ block.transactions|length }})</h2>
+                    <div class="transaction-list">
+                        {% for tx in block.transactions %}
+                        <div class="transaction-card">
+                            <div class="tx-header">
+                                <div class="tx-id">{{ tx.transaction_id }}</div>
+                                <div class="tx-signature">
+                                    {% if tx.manufacturer_signature and tx.manufacturer_signature != 'unsigned' %}
+                                        ✓ Digitally Signed
+                                    {% else %}
+                                        ○ Unsigned
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="product-info">
+                                <h4>{{ tx.product_data.product_name }}</h4>
+                                
+                                <div class="product-detail">
+                                    <span class="detail-label">Product ID:</span>
+                                    <span class="detail-value" style="font-family: monospace; font-size: 0.85em;">
+                                        {{ tx.product_data.product_id[:16] }}...
+                                    </span>
+                                </div>
+
+                                <div class="product-detail">
+                                    <span class="detail-label">Manufacturer:</span>
+                                    <span class="detail-value">{{ tx.product_data.manufacturer }}</span>
+                                </div>
+
+                                <div class="product-detail">
+                                    <span class="detail-label">Batch Number:</span>
+                                    <span class="detail-value">{{ tx.product_data.batch_number }}</span>
+                                </div>
+
+                                <div class="product-detail">
+                                    <span class="detail-label">Manufacture Date:</span>
+                                    <span class="detail-value">{{ tx.product_data.manufacture_date }}</span>
+                                </div>
+
+                                <div class="product-detail">
+                                    <span class="detail-label">Registration Time:</span>
+                                    <span class="detail-value">{{ tx.product_data.registration_time|int }}</span>
+                                </div>
+
+                                {% if tx.manufacturer_signature and tx.manufacturer_signature != 'unsigned' %}
+                                <div class="product-detail">
+                                    <span class="detail-label">Digital Signature:</span>
+                                    <span class="detail-value" style="font-family: monospace; font-size: 0.75em;">
+                                        {{ tx.manufacturer_signature[:32] }}...
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation">
+                    {% if block.index > 0 %}
+                        <a href="/block/{{ block.index - 1 }}" class="nav-btn">← Previous Block</a>
+                    {% else %}
+                        <span class="nav-btn disabled">← Previous Block</span>
+                    {% endif %}
+
+                    {% if block.index < total_blocks - 1 %}
+                        <a href="/block/{{ block.index + 1 }}" class="nav-btn">Next Block →</a>
+                    {% else %}
+                        <span class="nav-btn disabled">Next Block →</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

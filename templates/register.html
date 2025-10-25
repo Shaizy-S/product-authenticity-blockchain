@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Product - Blockchain Authenticity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .success-message h2 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .qr-code-container h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .qr-code-container img {
+            max-width: 300px;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .product-id-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-family: monospace;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .register-another {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        .register-another:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+
+        {% if success %}
+        <div class="success-message">
+            <h2>✅ Product Successfully Registered!</h2>
+            <p>Your product has been added to Block #{{ block_index }} on the blockchain.</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Block Hash: <code>{{ block_hash[:32] }}...</code></p>
+        </div>
+
+        <div class="qr-code-container">
+            <h3>📱 Product QR Code</h3>
+            <p>Scan this QR code to verify the product authenticity</p>
+            
+            <img src="/static/{{ qr_code_path }}" alt="Product QR Code">
+            
+            <div class="product-id-display">
+                <strong>Product ID:</strong><br>
+                {{ product_id }}
+            </div>
+
+            <div>
+                <a href="/download_qr/{{ product_id }}" class="download-btn">💾 Download QR Code</a>
+                <a href="/register" class="register-another">➕ Register Another Product</a>
+                <a href="/" class="register-another">🏠 Go Home</a>
+            </div>
+        </div>
+
+        {% else %}
+        <header>
+            <h1>📝 Register New Product</h1>
+            <p>Add a new product to the blockchain and generate a unique QR code</p>
+        </header>
+
+        <div class="form-container">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="product_name">Product Name *</label>
+                    <input type="text" id="product_name" name="product_name" required 
+                           placeholder="e.g., Samsung Galaxy S24">
+                </div>
+
+                <div class="form-group">
+                    <label for="manufacturer">Manufacturer *</label>
+                    <input type="text" id="manufacturer" name="manufacturer" required 
+                           placeholder="e.g., Samsung Electronics">
+                </div>
+
+                <div class="form-group">
+                    <label for="batch_number">Batch Number *</label>
+                    <input type="text" id="batch_number" name="batch_number" required 
+                           placeholder="e.g., BATCH-2025-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="manufacture_date">Manufacture Date *</label>
+                    <input type="date" id="manufacture_date" name="manufacture_date" required>
+                </div>
+
+                <button type="submit" class="submit-btn">🔗 Register Product on Blockchain</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

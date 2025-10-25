@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Authenticity Blockchain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .status-value.valid {
+            color: #28a745;
+        }
+
+        .status-value.invalid {
+            color: #dc3545;
+        }
+
+        .actions {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .products-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .products-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .product-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .product-info {
+            color: #555;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        .product-id {
+            background: #667eea;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.7em;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+
+        .no-products {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 1.1em;
+        }
+
+        .icon {
+            font-size: 1.5em;
+        }
+
+        @media (max-width: 768px) {
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 Product Authenticity Blockchain</h1>
+            <p class="subtitle">Fighting Counterfeit Products with Blockchain Technology</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">Total Blocks</div>
+                <div class="status-value">{{ stats.total_blocks }}</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Total Transactions</div>
+                <div class="status-value">{{ stats.total_transactions }}</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Registered Products</div>
+                <div class="status-value">{{ stats.total_products }}</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Manufacturers</div>
+                <div class="status-value">{{ stats.registered_manufacturers }}</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Mining Difficulty</div>
+                <div class="status-value">{{ stats.difficulty }}</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Blockchain Status</div>
+                <div class="status-value {% if chain_valid %}valid{% else %}invalid{% endif %}">
+                    {% if chain_valid %}✓ Valid{% else %}✗ Invalid{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/register" class="btn btn-primary">
+                <span class="icon">➕</span>
+                Register New Product
+            </a>
+            <a href="/verify" class="btn btn-secondary">
+                <span class="icon">🔍</span>
+                Verify Product
+            </a>
+            <a href="/explorer" class="btn btn-primary">
+                <span class="icon">🔍</span>
+                Blockchain Explorer
+            </a>
+            <a href="/manufacturers" class="btn btn-secondary">
+                <span class="icon">🏭</span>
+                View Manufacturers
+            </a>
+        </div>
+
+        <div class="products-section">
+            <h2>📦 Registered Products</h2>
+            {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <h3>{{ product.product_name }}</h3>
+                    <div class="product-info"><strong>Manufacturer:</strong> {{ product.manufacturer }}</div>
+                    <div class="product-info"><strong>Batch:</strong> {{ product.batch_number }}</div>
+                    <div class="product-info"><strong>Date:</strong> {{ product.manufacture_date }}</div>
+                    <div class="product-info"><strong>Block:</strong> #{{ product.block_index }}</div>
+                    <div class="product-id">{{ product.product_id[:32] }}...</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-products">
+                No products registered yet. Click "Register New Product" to add your first product!
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

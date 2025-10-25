@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+*.egg-info/
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+*.env
+
+# Python virtualenv
+venv/
+ENV/
+env.bak/
+
+# Static / build artifacts
+static/qr_codes/
+*.sqlite3
+*.db
+
+# Mac/Windows
+.DS_Store
+Thumbs.db

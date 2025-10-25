@@ -1,0 +1,87 @@
+{
+  "chain": [
+    {
+      "index": 0,
+      "timestamp": 1761373851.5382316,
+      "transactions": [
+        {
+          "transaction_id": "567097e87708afddab2aaeac0b189391d3534509eb041b84a1c7f0d2e767b7b3",
+          "timestamp": 1761373851.5382316,
+          "product_data": {
+            "product_name": "Genesis Block",
+            "manufacturer": "System",
+            "batch_number": "GENESIS-001",
+            "manufacture_date": "2025-01-01",
+            "product_id": "genesis"
+          },
+          "manufacturer_signature": null
+        }
+      ],
+      "previous_hash": "0",
+      "nonce": 0,
+      "merkle_root": "fabc43e596f202c2bf6e1eb37a6d78453a4ba166b59d29f8cb69a7a95ba8ec17",
+      "hash": "d1f8ca4db9730d10bf1a3ced6950cbf8349c475389aa63a6f5780a2700ee4ed5"
+    },
+    {
+      "index": 1,
+      "timestamp": 1761373873.8302755,
+      "transactions": [
+        {
+          "transaction_id": "43bbbb049bf80406706c351eef2b092c9a3634c0714f327b2d96d6f6e70b3b7e",
+          "timestamp": 1761373873.8302755,
+          "product_data": {
+            "product_name": " iPhone 15 Pro",
+            "manufacturer": "Apple Inc.",
+            "batch_number": "BATCH-2025-002",
+            "manufacture_date": "2025-10-24",
+            "registration_time": 1761373873.8302755,
+            "product_id": "8f1f0036eb18b7f1ad068d7ecb0da94ac3db56770cbcd232c00f72b930120615"
+          },
+          "manufacturer_signature": "67933874b6c62d0a2077c3d2d2ad8bdb2c13230fd7ae78e511f628ef004a91c5"
+        }
+      ],
+      "previous_hash": "d1f8ca4db9730d10bf1a3ced6950cbf8349c475389aa63a6f5780a2700ee4ed5",
+      "nonce": 14529,
+      "merkle_root": "5b85ce2cf59a525e4e64b8b1c788afc59d1a35b1387e1e152be07fcfca575bee",
+      "hash": "0000226fb3cef166aad992ea9c8aad4e4b431c94cb403dfbb02b4c588a68a2a8"
+    },
+    {
+      "index": 2,
+      "timestamp": 1761375994.142126,
+      "transactions": [
+        {
+          "transaction_id": "8d4c02f8e373b1e801de9cffac8b9669e7ccdfdfa525dbe93176448475a8d674",
+          "timestamp": 1761375994.142126,
+          "product_data": {
+            "product_name": "samsung",
+            "manufacturer": "samsung",
+            "batch_number": "BATCH-2025-003",
+            "manufacture_date": "2025-10-17",
+            "registration_time": 1761375994.142126,
+            "product_id": "6882a22c3ad2f37de13f6451fb377b9089107e0f4cf77a6b24cb71221905e832"
+          },
+          "manufacturer_signature": "ceb984dfcfa4588138db38430526cb8d087e9f77d686818f4ad69a1e2c747690"
+        }
+      ],
+      "previous_hash": "0000226fb3cef166aad992ea9c8aad4e4b431c94cb403dfbb02b4c588a68a2a8",
+      "nonce": 28256,
+      "merkle_root": "ffc399b39513e4dcc7906a45be2dacdc69150353db4e3a0889d76bb301c19b60",
+      "hash": "00002bb3a000177f6efcc80c4510ff774f2eae2f71cb399c4cf0c5d1cd2564b2"
+    }
+  ],
+  "manufacturers": {
+    "Apple Inc.": {
+      "name": "Apple Inc.",
+      "public_key": "8583b45e8837acbdd6619da8a54617350043f3d06ce90265fd8a502e3bd17828",
+      "private_key": "274be994112821363ce72b6d58711502ee12727919199e462ce625f10018ff59",
+      "registered_at": 1761373873.8302755
+    },
+    "samsung": {
+      "name": "samsung",
+      "public_key": "59cc9d7d2ff3e4ce908aee427eb9a033e9fa931ca24846bb8d8d4fa085f80943",
+      "private_key": "d9afeae9788be88fa363a1e9759d7cabd56da416bf83766760f1b8f8d1c57764",
+      "registered_at": 1761375994.142126
+    }
+  },
+  "difficulty": 4
+}
